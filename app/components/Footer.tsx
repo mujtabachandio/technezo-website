@@ -26,10 +26,10 @@ export default function Footer() {
     {
       title: 'Policy',
       links: [
-        { title: 'Payment Information', href: '/easy-payment-options' },
+        { title: 'Payment Information', href: '/' },
         { title: 'Privacy Policy', href: '/policy' },
-        { title: 'Replacement & Warranty', href: '/warranty-returns' },
-        { title: 'Warranty by Paklap', href: '/paklap-warranty' }
+        { title: 'Replacement & Warranty', href: '/' },
+        { title: 'Warranty by Technezo', href: '/' }
       ]
     },
     {
