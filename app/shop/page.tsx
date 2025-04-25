@@ -1,3 +1,4 @@
+//laptop acc page fetching from sanity 
 'use client';
 
 import { useEffect, useState, ChangeEvent } from 'react';
@@ -6,6 +7,7 @@ import Image from 'next/image';
 import  client  from '@/sanity/lib/client';
 import imageUrlBuilder from '@sanity/image-url';
 import { motion } from 'framer-motion';
+import Navbar from '../components/Navbar';
 
 import type { SanityImageSource } from '@sanity/image-url/lib/types/types';
 
@@ -204,7 +206,9 @@ export default function ShopPage() {
   };
 
   return (
+    
     <div className="min-h-screen bg-gray-50">
+     <Navbar />
       {/* Header */}
       <motion.header 
         initial={{ y: -100 }}

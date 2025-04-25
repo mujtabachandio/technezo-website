@@ -1,69 +1,45 @@
-//app/components/Navbar.tsx
 "use client";
-import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { ShoppingCart, Menu, X, Heart} from 'lucide-react';
-
-import { useCartStore } from '@/lib/cartStore';
-
-
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ShoppingCart, Menu, X, ChevronDown } from "lucide-react";
+import Image from "next/image";
+import { useCartStore } from "@/lib/cartStore";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [categoryOpen, setCategoryOpen] = useState(false);
+  const [categoryOpen, setCategoryOpen] = useState(false); // For desktop hover
+  const [mobileCategoryOpen, setMobileCategoryOpen] = useState(false); // For mobile toggle
 
-  // Handle scroll effect
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 20) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
+      setIsScrolled(window.scrollY > 20);
     };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Close categories dropdown when clicking outside
-  useEffect(() => {
-    const handleClickOutside = () => {
-      setCategoryOpen(false);
-    };
-
-    if (categoryOpen) {
-      document.addEventListener('click', handleClickOutside);
-    }
-    
-    return () => {
-      document.removeEventListener('click', handleClickOutside);
-    };
-  }, [categoryOpen]);
-
-  // Navigation items
   const navItems = [
-    { name: 'Home', href: '/' },
-    { name: 'Deals', href: '/deals' },
-    { name: 'New Arrivals', href: '/new-arrivals' },
-    { name: 'Support', href: '/support' },
-    { name: 'shop', href: '/shop' },
+    { name: "Home", href: "/" },
+    { name: "About us", href: "/about" },
+    { name: "Shop", href: "/shop" },
   ];
 
-  // Categories for laptop shop
-  
+  const categoryItems = [
+    { name: "Deals", href: "/deals" },
+    { name: "New Arrivals", href: "/new-arrivals" },
+    { name: "Laptop Accessories", href: "/accessories" },
+  ];
 
   const { cart, loadCart } = useCartStore();
-
   useEffect(() => {
-    loadCart(); // Load the cart from localStorage on component mount
+    loadCart();
   }, [loadCart]);
 
   return (
-    <header 
+    <header
       className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
-        isScrolled ? 'bg-black shadow-lg' : 'bg-black bg-opacity-90'
+        isScrolled ? "bg-black shadow-lg" : "bg-black bg-opacity-90"
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -79,20 +55,24 @@ export default function Navbar() {
           </div>
 
           {/* Logo */}
-          <div className="flex-shrink-0 flex items-center">
-            <motion.a 
-              href="/"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="text-white font-bold text-xl"
-            >
-              TECH<span className="text-red-600">NEZO</span>
-            </motion.a>
-          </div>
+          <motion.a
+            href="/"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="flex items-center space-x-2 text-white font-bold text-xl"
+          >
+            <Image
+              src="/web-logo.png"
+              alt="Technezo Logo"
+              width={150}
+              height={400}
+              className="rounded-full object-contain"
+              priority
+            />
+          </motion.a>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex space-x-6">
-            {/* Regular nav items */}
+          <nav className="hidden md:flex space-x-6 items-center">
             {navItems.map((item) => (
               <motion.a
                 key={item.name}
@@ -104,12 +84,41 @@ export default function Navbar() {
                 {item.name}
               </motion.a>
             ))}
+
+            {/* Categories Dropdown (Desktop) */}
+            <div
+              className="relative"
+              onMouseEnter={() => setCategoryOpen(true)}
+              onMouseLeave={() => setCategoryOpen(false)}
+            >
+              <button className="flex items-center text-white hover:text-red-500 text-sm font-medium">
+                Categories <ChevronDown size={16} className="ml-1" />
+              </button>
+              <AnimatePresence>
+                {categoryOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    className="absolute left-0 mt-2 w-48 bg-black shadow-lg rounded-md z-50"
+                  >
+                    {categoryItems.map((item) => (
+                      <a
+                        key={item.name}
+                        href={item.href}
+                        className="block px-4 py-2 text-white hover:bg-red-600"
+                      >
+                        {item.name}
+                      </a>
+                    ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
           </nav>
 
-          {/* Right icons */}
+          {/* Cart Icon */}
           <div className="flex items-center space-x-4">
-            
-            {/* Cart with item count */}
             <motion.a
               href="/cart"
               className="text-white hover:text-red-500 relative"
@@ -127,7 +136,7 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Mobile menu */}
+      {/* Mobile Menu */}
       <AnimatePresence>
         {isMenuOpen && (
           <motion.div
@@ -137,32 +146,49 @@ export default function Navbar() {
             className="md:hidden bg-black bg-opacity-95 overflow-hidden"
           >
             <div className="px-2 pt-2 pb-3 space-y-1 border-t border-gray-800">
-              {/* Mobile Categories Section */}
-              {/* Regular navigation items */}
+              {/* Mobile nav items */}
               {navItems.map((item) => (
                 <motion.a
                   key={item.name}
                   href={item.href}
                   className="block px-3 py-2 text-white hover:bg-red-600 rounded-md text-base font-medium"
-                  whileTap={{ backgroundColor: "#EF4444" }}
                 >
                   {item.name}
                 </motion.a>
               ))}
-              <motion.a
-                href="/wishlist"
-                className="flex items-center px-3 py-2 text-white hover:bg-red-600 rounded-md text-base font-medium"
-                whileTap={{ backgroundColor: "#EF4444" }}
+
+              {/* Mobile Categories Toggle */}
+              <button
+                onClick={() => setMobileCategoryOpen(!mobileCategoryOpen)}
+                className="w-full text-left px-3 py-2 text-white hover:bg-red-600 rounded-md flex items-center justify-between"
               >
-                <Heart size={18} className="mr-2" />
-                Wishlist
-              </motion.a>
+                Categories <ChevronDown size={16} />
+              </button>
+              <AnimatePresence>
+                {mobileCategoryOpen && (
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: "auto", opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    className="pl-6 space-y-1"
+                  >
+                    {categoryItems.map((item) => (
+                      <a
+                        key={item.name}
+                        href={item.href}
+                        className="block px-3 py-2 text-white hover:bg-red-600 rounded-md text-base font-medium"
+                      >
+                        {item.name}
+                      </a>
+                    ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
             </div>
           </motion.div>
         )}
-    
       </AnimatePresence>
-
     </header>
   );
 }

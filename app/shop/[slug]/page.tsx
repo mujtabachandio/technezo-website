@@ -1,4 +1,4 @@
-//app/shop/[slug]/page.tsx
+//dynamic product page with sanity 
 import  client  from "@/sanity/lib/client";
 import Link from "next/link";
 import dynamic from "next/dynamic";

@@ -6,17 +6,17 @@ export default function FeaturesStrip() {
     {
       icon: faTruck,
       title: 'Delivery All Over Pakistan',
-      description: 'Free delivery on selected items'
+      description: 'Within Working Days '
     },
     {
       icon: faRetweet,
-      title: '7 Days Money Back Guarantee',
+      title: '3 Days Money Back Guarantee',
       description: 'Hassle-free returns'
     },
     {
       icon: faLock,
-      title: '15 Days Replacement Warranty',
-      description: 'Trusted payments'
+      title: '15 Days Checking  Warranty',
+      description: '100% Customer Satisfaction'
     }
   ];
 
