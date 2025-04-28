@@ -16,7 +16,7 @@ export default {
       title: 'Brand',
       type: 'string',
       options: {
-        list: ['HP', 'Dell', 'Lenovo', 'Asus', 'Acer', 'MSI', 'Apple'],
+        list: ['HP', 'Dell', 'Lenovo', 'Asus', 'Acer', 'MSI', 'Apple','Toshiba'],
       },
     },
     { name: 'model', title: 'Model', type: 'string' },
