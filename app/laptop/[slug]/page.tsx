@@ -94,6 +94,7 @@ export default async function LaptopDetailPage({ params }: { params: { slug: str
                 {[
                   ['Brand', laptop.brand],
                   ['Processor', laptop.processor],
+                  ['Generation', laptop.generation],
                   ['GPU', laptop.gpu],
                   ['RAM', laptop.ram],
                   ['Storage', laptop.storage],
@@ -101,7 +102,6 @@ export default async function LaptopDetailPage({ params }: { params: { slug: str
                   ['Resolution', laptop.resolution],
                   ['OS', laptop.os],
                   ['Warranty', laptop.warranty],
-                  ['Generation', laptop.generation],
                 ].map(([label, value], idx) =>
                   value ? (
                     <div className="grid grid-cols-3 gap-4" key={idx}>
