@@ -11,10 +11,9 @@ interface Product {
   title?: string;
   price?: number;
   description?: string;
-  image?: string;
-  [key: string]: string | number | boolean | undefined; // Limiting to known types
+  image?: { asset: { url: string } }; // Sanity's image structure
+  [key: string]: string | number | boolean | { asset: { url: string } } | undefined;
 }
-
 interface ProductClientSideProps {
   product: Product;
 }
@@ -28,7 +27,7 @@ export default function ProductClientSide({ product }: ProductClientSideProps) {
       _id: product._id || 'unknown', // Fallback for _id if not provided
       title: product.title || 'Untitled Product', // Fallback for title
       price: product.price || 0, // Fallback to 0 if price is undefined
-      image: product.image || '', // Fallback to an empty string if image is undefined
+      image: typeof product.image === 'object' && product.image?.asset?.url ? product.image.asset.url : '', // Extract URL or fallback to an empty string
     });
     setShowNotification(true);
 
