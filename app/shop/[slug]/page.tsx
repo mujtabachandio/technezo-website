@@ -159,7 +159,14 @@ export default async function ProductPage({
             <div className="space-y-2">
               <div className="flex justify-between items-baseline">
                 <p className="text-3xl font-bold text-gray-900">
-                  Rs{typeof product?.price === 'number' ? product.price.toLocaleString() : 'Price not available'}
+                  Rs{typeof product?.price === 'number'
+  ? product.price.toLocaleString('en-PK', {
+      style: 'currency',
+      currency: 'PKR',
+      maximumFractionDigits: 0,
+    })
+  : '-'}
+
                 </p>
               </div>
 
