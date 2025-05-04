@@ -3,7 +3,7 @@ import { singleDealQuery } from '@/lib/queries';
 import { LaptopDeal } from '@/types/sanity';
 import Image from 'next/image';
 import Link from 'next/link';
-import Addtocart from '../../accessories/[slug]/addtocart';
+import Addtocart from '../addtocart';
 import { ChevronRight, Home, Clock, Tag, Check, ShoppingCart, Award, Truck, Shield } from 'lucide-react';
 import { format } from 'date-fns';
 
@@ -294,7 +294,7 @@ export default async function DealDetailPage({ params }: Props) {
                   ) : (
                     <div className="space-y-4">
                       <Addtocart
-                        accessory={{
+                        product={{
                           _id: deal._id,
                           title: deal.title,
                           price: deal.discountedPrice,

@@ -84,7 +84,6 @@ export default function HeroSection() {
             className="absolute inset-0 w-full h-full"
           >
             <div className="relative w-full h-full">
-              <div className="absolute inset-0 bg-gradient-to-r from-black via-black/70 to-transparent z-10" />
               <Image
                 fill
                 src={urlFor(slides[currentSlide].image).url()}
@@ -106,7 +105,7 @@ export default function HeroSection() {
               className="max-w-xl text-white text-center"
             >
               <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4">
-                {slides[currentSlide].title}
+                {slides[currentSlide].title} 
               </h1>
               <p className="text-base sm:text-lg md:text-xl text-gray-200 mb-8">
                 {slides[currentSlide].subtitle}

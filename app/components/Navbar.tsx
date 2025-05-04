@@ -23,12 +23,14 @@ export default function Navbar() {
     { name: "Home", href: "/" },
     { name: "About us", href: "/about" },
     { name: "Shop", href: "/shop" },
+    { name: "Deals", href: "/deals" },
   ];
 
   const categoryItems = [
-    { name: "Deals", href: "/deals" },
     { name: "New Arrivals", href: "/new-arrivals" },
-    { name: "Laptop Accessories", href: "/accessories" },
+    { name: "Accessories", href: "/accessories" },
+    { name: "Ram", href: "/ram" },
+    { name: "Storage", href: "/storage" },
   ];
 
   const { cart, loadCart } = useCartStore();

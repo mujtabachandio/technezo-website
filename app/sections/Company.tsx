@@ -36,7 +36,7 @@ const demoData = {
     {
       id: "logo-6",
       description: "Amd",
-      image: "AMD-logo.png",
+      image: "/AMD-Logo.png",
       className: "h-24 w-auto",
     },
     {

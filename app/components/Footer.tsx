@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebook, faInstagram } from '@fortawesome/free-brands-svg-icons';
+import Image from 'next/image';
 
 export default function Footer() {
   const footerSections = [
@@ -72,8 +73,14 @@ export default function Footer() {
             <div className="flex items-center justify-center">
               <div className="h-12 w-36 relative bg-slate-950 overflow-hidden">
                 <div className="absolute inset-0 p-2 flex items-center justify-center">
-                  <span className="text-white text-xl font-bold">TECH</span>
-                  <span className="text-red-500 text-xl font-bold">NEZO</span>
+                  <Image
+                  height={300}
+                  width={300}
+                    src="/web-logo.png"
+                    alt="Technezo Logo"
+                    objectFit="contain"
+                    className="h-20 w-32"
+                  />
                 </div>
               </div>
             </div>

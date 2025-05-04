@@ -25,10 +25,55 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         {children}
+
+        {/* WhatsApp Widget Embed */}
+        <script
+          async
+          src="https://d2mpatx37cqexb.cloudfront.net/delightchat-whatsapp-widget/embeds/embed.min.js"
+        ></script>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              var wa_btnSetting = {
+                btnColor: "#16BE45",
+                ctaText: "WhatsApp Us",
+                cornerRadius: 40,
+                marginBottom: 20,
+                marginLeft: 20,
+                marginRight: 20,
+                btnPosition: "right",
+                whatsAppNumber: "03332568818",
+                welcomeMessage: "Hello, welcome\\nYour Tech. Your Zone. Technezo.\\n\\n",
+                zIndex: 999999,
+                btnColorScheme: "light"
+              };
+              var wa_widgetSetting = {
+                title: "TECHNEZO",
+                subTitle: "Your Tech. Your Zone. Technezo.",
+                headerBackgroundColor: "#16BE45",
+                headerColorScheme: "light",
+                greetingText: "Hi there! \\nHow can I help you?",
+                ctaText: "Start Chat",
+                btnColor: "#16BE45",
+                cornerRadius: 40,
+                welcomeMessage: "Hello",
+                btnColorScheme: "light",
+                brandImage: "/main-logo.jpg",
+                darkHeaderColorScheme: {
+                  title: "#333333",
+                  subTitle: "#4F4F4F"
+                }
+              };
+              window.onload = () => {
+                if (typeof _waEmbed === "function") {
+                  _waEmbed(wa_btnSetting, wa_widgetSetting);
+                }
+              };
+            `,
+          }}
+        />
       </body>
     </html>
   );

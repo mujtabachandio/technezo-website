@@ -3,7 +3,6 @@ import  client  from "@/sanity/lib/client";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import DescriptionSpecsToggle from "@/app/components/DescriptionSpecsToggle";
-import CartDemo from "@/app/cart/page";
 import ProductClientSide from "./ProductClientSide";
 
 
@@ -162,7 +161,6 @@ export default async function ProductPage({
                 <p className="text-3xl font-bold text-gray-900">
                   Rs{product.price.toLocaleString()}
                 </p>
-                <p className="text-sm text-gray-500">Inclusive of all taxes</p>
               </div>
 
               <div className="text-green-600 text-sm font-medium flex items-center">
@@ -215,7 +213,7 @@ export default async function ProductPage({
                 href="https://wa.me/03332568818?text=Hi%2C%20I%27m%20interested%20in%20your%20laptop%20listed%20on%20your%20website."
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full bg-gray-100 text-gray-800 py-3 px-6 rounded-lg hover:bg-gray-200 transition-colors duration-200 font-medium flex items-center justify-center"
+                className="w-full bg-green-500 text-white py-3 px-6 rounded-lg hover:bg-green-600 transition-colors duration-200 font-medium flex items-center justify-center"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -280,7 +278,6 @@ export default async function ProductPage({
   description={product.description}
   specs={specs}
 />
-<CartDemo />
       </div>
     </div>
   );

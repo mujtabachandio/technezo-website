@@ -2,6 +2,7 @@ import  client  from '@/sanity/lib/client';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import { notFound } from 'next/navigation';
+import AddToCart from '@/app/new-arrivals/addtocart';
 
 const ImageGallery = dynamic(() => import('@/app/components/ImageGallery'), {
   ssr: false,
@@ -114,23 +115,7 @@ export default async function LaptopDetailPage({ params }: { params: { slug: str
             </div>
 
             <div className="space-y-4">
-              <button className="w-full bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 transition-colors duration-200 font-medium flex items-center justify-center">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="w-5 h-5 mr-2"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M2.25 6.75L3 10.5m0 0L2.25 14.25M3 10.5h18M21.75 6.75L21 10.5m0 0l.75 3.75M21 10.5H3"
-                  />
-                </svg>
-                Buy Now
-              </button>
+              <AddToCart product={laptop} />
             </div>
           </div>
         </div>

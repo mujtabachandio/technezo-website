@@ -1,37 +1,41 @@
 // components/Banner.js
-import { Headphones, MessageCircle, Phone } from 'lucide-react';
-import React from 'react';
+'use client';
 
-const contactDetails = [
+import React from 'react';
+import { Headphones, MessageCircle, Phone } from 'lucide-react';
+
+const contactDetails: Array<{
+  type: keyof typeof iconMap;
+  label: string;
+  number: string;
+  href: string;
+}> = [
   {
-    icon: <Phone className="w-5 h-5" />,
+    type: 'whatsapp',
     label: 'WhatsApp',
     number: '0333 2568818',
     href: 'https://wa.me/923332568818',
   },
   {
-    icon: <Phone className="w-5 h-5" />,
+    type: 'call',
     label: 'Call',
     number: '0345 3773999',
     href: 'tel:03453773999',
   },
   {
-    icon: <Phone className="w-5 h-5" />,
+    type: 'ptcl',
     label: 'PTCL',
     number: '021 32700705',
     href: 'tel:02132700705',
   },
-  {
-    icon: <Headphones className="w-5 h-5" />,
-    label: 'Chat Now',
-    href: '#chat',
-  },
-  {
-    icon: <MessageCircle className="w-5 h-5" />,
-    label: 'Message Us',
-    href: '#message',
-  },
 ];
+
+// Map each "type" to a Lucide icon component
+const iconMap = {
+  whatsapp: MessageCircle,
+  call: Phone,
+  ptcl: Headphones,
+};
 
 const Banner = () => {
   return (
@@ -42,21 +46,24 @@ const Banner = () => {
         </h2>
 
         <div className="flex flex-col sm:flex-row sm:flex-wrap items-center justify-center gap-6">
-          {contactDetails.map((contact, index) => (
-            <a
-              key={index}
-              href={contact.href}
-              target={contact.href.startsWith('http') ? '_blank' : '_self'}
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 px-4 py-2 bg-indigo-800 rounded-lg hover:bg-indigo-600 transition"
-            >
-              {contact.icon}
-              <span className="text-sm md:text-base font-medium">
-                {contact.label}
-                {contact.number ? `: ${contact.number}` : ''}
-              </span>
-            </a>
-          ))}
+          {contactDetails.map((contact, index) => {
+            const Icon = iconMap[contact.type] || Phone;
+            return (
+              <a
+                key={index}
+                href={contact.href}
+                target={contact.href.startsWith('http') ? '_blank' : '_self'}
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 px-4 py-2 bg-indigo-800 rounded-lg hover:bg-indigo-600 transition"
+              >
+                <Icon className="w-5 h-5" />
+                <span className="text-sm md:text-base font-medium">
+                  {contact.label}
+                  {contact.number && `: ${contact.number}`}
+                </span>
+              </a>
+            );
+          })}
         </div>
       </div>
     </div>
