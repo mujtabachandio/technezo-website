@@ -135,6 +135,31 @@ function FilterSidebar({
           Clear All
         </button>
       </div>
+      
+      {/* Quick */}
+      <div className="mt-6">
+        <h3 className="font-medium mb-2">Quick</h3>
+        <label className="flex items-center mb-2">
+          <input
+            type="checkbox"
+            checked={selectedFilters.inStockOnly}
+            onChange={() => handleQuick('inStockOnly')}
+            className="mr-2"
+          />{' '}
+          In Stock Only
+        </label>
+        <label className="flex items-center">
+          <input
+            type="checkbox"
+            checked={selectedFilters.featured}
+            onChange={() => handleQuick('featured')}
+            className="mr-2"
+          />{' '}
+          Featured
+        </label>
+      </div>
+
+
 
       {/* Price */}
       <div className="mb-6">
@@ -160,6 +185,13 @@ function FilterSidebar({
       </div>
 
       {/* Reusable checkbox groups */}
+      <FilterGroup
+        title="Generation"
+        options={availableGenerations}
+        selected={selectedFilters.generations}
+        onChange={(val) => handleCheckboxChange('generations', val)}
+      />
+      
       <FilterGroup
         title="Brand"
         options={availableBrands}
@@ -190,12 +222,7 @@ function FilterSidebar({
         selected={selectedFilters.graphics}
         onChange={(val) => handleCheckboxChange('graphics', val)}
       />
-      <FilterGroup
-        title="Generation"
-        options={availableGenerations}
-        selected={selectedFilters.generations}
-        onChange={(val) => handleCheckboxChange('generations', val)}
-      />
+      
       <FilterGroup
         title="Touch Screen"
         options={['Touch', 'Non-Touch']}
@@ -203,28 +230,7 @@ function FilterSidebar({
         onChange={(val) => handleCheckboxChange('touchOptions', val)}
       />
 
-      {/* Quick */}
-      <div className="mt-6">
-        <h3 className="font-medium mb-2">Quick</h3>
-        <label className="flex items-center mb-2">
-          <input
-            type="checkbox"
-            checked={selectedFilters.inStockOnly}
-            onChange={() => handleQuick('inStockOnly')}
-            className="mr-2"
-          />{' '}
-          In Stock Only
-        </label>
-        <label className="flex items-center">
-          <input
-            type="checkbox"
-            checked={selectedFilters.featured}
-            onChange={() => handleQuick('featured')}
-            className="mr-2"
-          />{' '}
-          Featured
-        </label>
-      </div>
+      
     </aside>
   );
 }
