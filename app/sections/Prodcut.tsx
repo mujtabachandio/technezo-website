@@ -34,6 +34,7 @@ interface Laptop {
   featured: boolean;
   isGaming: boolean;
   ram: string;
+  storage: string;
   brand: string;
   processor: string;
   displaySize: string;
@@ -319,12 +320,11 @@ function ProductCard({ product }: { product: Laptop }) {
           <h3 className="font-semibold text-gray-900 line-clamp-2 mb-1">
             {product.title}
           </h3>
-          <div className="text-sm text-gray-500 mb-3">
-            {product.processor} • {product.displaySize} • {product.resolution} •{' '}
-            {product.gpu}
+          <div className="text-sm text-gray-600 mb-3">
+            {product.ram } {'ram , '} {product.storage} 
           </div>
           <div className="mt-auto text-2xl font-bold text-blue-600">
-            Rs.{product.price.toLocaleString()}
+            Rs. {product.price.toLocaleString()}
           </div>
         </div>
       </motion.div>

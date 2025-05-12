@@ -7,6 +7,8 @@ import Logo from './sections/Company';
 import Strip from './sections/contact-strip';
 import ProductSection from './sections/Prodcut'; // fixed typo
 import Footer from './components/Footer';
+import Review from './sections/Review';
+import Address from './sections/Address';
 
 export default function Home() {
   useEffect(() => {
@@ -22,7 +24,8 @@ export default function Home() {
       <HeroSection />
       <ProductSection />
       <Logo />
-      
+      <Review />
+      <Address />
       {/* Elfsight Widget */}
       <div className="elfsight-app-898d2430-f5ef-4290-a471-b2948fade6ba" data-elfsight-app-lazy></div>
 
