@@ -301,11 +301,6 @@ function ProductCard({ product }: { product: Laptop }) {
                 Gaming
               </span>
             )}
-            {!product.available && (
-              <span className="bg-red-500 text-white px-2 py-1 text-xs rounded">
-                Out of Stock
-              </span>
-            )}
           </div>
         </div>
         <div className="p-4 flex flex-col flex-grow">
@@ -389,6 +384,9 @@ export default function HomePage() {
       inStockOnly,
       featured,
     } = filters;
+
+    // First, filter out products that are not available (out of stock)
+    result = result.filter((p) => p.available === true);
 
     if (brands.length)
       result = result.filter((p) => brands.includes(p.brand));

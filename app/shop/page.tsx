@@ -139,6 +139,9 @@ export default function ShopPage() {
   useEffect(() => {
     let result = allProducts;
 
+    // First, filter out products that are not available (out of stock)
+    result = result.filter((p) => p.available === true);
+
     if (filters.brands.length > 0) {
       result = result.filter((p) => filters.brands.includes(p.brand));
     }
@@ -665,11 +668,6 @@ export default function ShopPage() {
                                 Gaming
                               </span>
                             )}
-                            {!product.available && (
-                              <span className="bg-red-600 text-white text-xs px-2 py-1 rounded-md shadow-sm">
-                                Out of Stock
-                              </span>
-                            )}
                           </div>
                         </div>
                         <div className="p-5 flex flex-col flex-grow">
@@ -692,11 +690,7 @@ export default function ShopPage() {
                             <p className="text-2xl font-bold text-black">
                               Rs.{product.price.toLocaleString()}
                             </p>
-                            {product.available ? (
-                              <p className="text-xs text-green-600 mt-1">In Stock & Ready to Ship</p>
-                            ) : (
-                              <p className="text-xs text-red-600 mt-1">Currently Unavailable</p>
-                            )}
+                            <p className="text-xs text-green-600 mt-1">In Stock & Ready to Ship</p>
                           </div>
                         </div>
                       </div>
