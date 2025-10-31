@@ -1,13 +1,16 @@
 import  client  from '@/sanity/lib/client';
 import Link from 'next/link';
-import dynamic from 'next/dynamic';
+import dynamicImport from 'next/dynamic';
 import { notFound } from 'next/navigation';
 import AddToCart from '@/app/new-arrivals/addtocart';
 
-const ImageGallery = dynamic(() => import('@/app/components/ImageGallery'), {
+// Force dynamic rendering to always fetch fresh price data (bypasses SSG cache)
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
+const ImageGallery = dynamicImport(() => import('@/app/components/ImageGallery'), {
   ssr: false,
 });
-
 
 // ─── Static Params (SSG) ─────────────────────────────── //
 export async function generateStaticParams() {
@@ -17,9 +20,36 @@ export async function generateStaticParams() {
 
 // ─── Page Component ───────────────────────────────────── //
 export default async function LaptopDetailPage({ params }: { params: { slug: string } }) {
-  const laptop = await client.fetch(`*[_type == "laptop" && slug.current == $slug][0]`, {
-    slug: params.slug,
-  });
+  // Fetch with no CDN for price-critical data to ensure fresh values
+  // Explicitly select price field to ensure we get the correct value
+  const laptop = await client.withConfig({ useCdn: false }).fetch(
+    `*[_type == "laptop" && slug.current == $slug][0]{
+      _id,
+      title,
+      slug,
+      brand,
+      model,
+      processor,
+      generation,
+      ram,
+      storage,
+      gpu,
+      displaySize,
+      screenSize,
+      resolution,
+      touchScreen,
+      os,
+      warranty,
+      condition,
+      price,
+      images,
+      description,
+      available,
+      featured,
+      isGaming
+    }`,
+    { slug: params.slug }
+  );
 
   if (!laptop) return notFound();
 

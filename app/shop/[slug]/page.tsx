@@ -1,15 +1,15 @@
 //dynamic product page with sanity 
 import  client  from "@/sanity/lib/client";
 import Link from "next/link";
-import dynamic from "next/dynamic";
+import dynamicImport from "next/dynamic";
 import DescriptionSpecsToggle from "@/app/components/DescriptionSpecsToggle";
 import ProductClientSide from "./ProductClientSide";
 
+// Force dynamic rendering to always fetch fresh price data (bypasses SSG cache)
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
-
-const ImageGallery = dynamic(() => import("@/app/components/ImageGallery"));
-
-
+const ImageGallery = dynamicImport(() => import("@/app/components/ImageGallery"));
 
 // ─── Static Params (SSG) ─────────────────────────────── //
 export async function generateStaticParams(): Promise<{ slug: string }[]> {
@@ -25,8 +25,34 @@ export default async function ProductPage({
 }: {
   params: { slug: string };
 }) {
-  const product = await client.fetch(
-    `*[_type == "laptop" && slug.current == $slug][0]`,
+  // Fetch with no CDN for price-critical data to ensure fresh values
+  // Explicitly select price field to ensure we get the correct value
+  const product = await client.withConfig({ useCdn: false }).fetch(
+    `*[_type == "laptop" && slug.current == $slug][0]{
+      _id,
+      title,
+      slug,
+      brand,
+      model,
+      processor,
+      generation,
+      ram,
+      storage,
+      gpu,
+      displaySize,
+      screenSize,
+      resolution,
+      touchScreen,
+      os,
+      warranty,
+      condition,
+      price,
+      images,
+      description,
+      available,
+      featured,
+      isGaming
+    }`,
     { slug: params.slug }
   );
 
@@ -80,7 +106,7 @@ export default async function ProductPage({
     "Warranty":       product.warranty,
     Condition:       product.condition,
     Available:       product.available ? "Yes" : "No",
-    Price:           `Rs ${product.price}`,
+    Price:           product.price ? `Rs ${product.price.toLocaleString()}` : 'N/A',
   };
   
 
@@ -159,12 +185,8 @@ export default async function ProductPage({
             <div className="space-y-2">
               <div className="flex justify-between items-baseline">
                 <p className="text-3xl font-bold text-gray-900">
-                  Rs{typeof product?.price === 'number'
-  ? product.price.toLocaleString('en-PK', {
-      style: 'currency',
-      currency: 'PKR',
-      maximumFractionDigits: 0,
-    })
+                  Rs {typeof product?.price === 'number'
+  ? product.price.toLocaleString()
   : '-'}
 
                 </p>

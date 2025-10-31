@@ -118,12 +118,45 @@ export default function ShopPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false);
 
-  // Fetch all products from Sanity on component mount.
+  // Fetch all products from Sanity on component mount - bypass CDN cache for fresh price data
   useEffect(() => {
     async function fetchData() {
       setIsLoading(true);
       try {
-        const data = await client.fetch(`*[_type == "laptop"]`);
+        // Use no CDN to get fresh price data from Sanity
+        // Explicitly select price field to ensure we get the correct value
+        // Force fresh fetch by bypassing all caching layers
+        const data = await client.withConfig({ 
+          useCdn: false,
+          perspective: 'published',
+          resultSourceMap: false
+        }).fetch(
+          `*[_type == "laptop"]{
+            _id,
+            title,
+            slug,
+            brand,
+            model,
+            processor,
+            generation,
+            ram,
+            storage,
+            gpu,
+            displaySize,
+            screenSize,
+            resolution,
+            touchScreen,
+            os,
+            warranty,
+            condition,
+            price,
+            images,
+            description,
+            available,
+            featured,
+            isGaming
+          } | order(_updatedAt desc)`
+        );
         setAllProducts(data);
         setFilteredProducts(data);
       } catch (error) {
