@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ShoppingCart, Menu, X, ChevronDown } from "lucide-react";
 import Image from "next/image";
 import { useCartStore } from "@/lib/cartStore";
+import SearchBar from "./SearchBar";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -119,6 +120,11 @@ export default function Navbar() {
             </div>
           </nav>
 
+          {/* Search Bar - Desktop */}
+          <div className="hidden md:block flex-1 max-w-md mx-4">
+            <SearchBar />
+          </div>
+
           {/* Cart Icon */}
           <div className="flex items-center space-x-4">
             <motion.a
@@ -148,6 +154,11 @@ export default function Navbar() {
             className="md:hidden bg-black bg-opacity-95 overflow-hidden"
           >
             <div className="px-2 pt-2 pb-3 space-y-1 border-t border-gray-800">
+              {/* Mobile Search */}
+              <div className="px-3 py-2 mb-2">
+                <SearchBar />
+              </div>
+
               {/* Mobile nav items */}
               {navItems.map((item) => (
                 <motion.a

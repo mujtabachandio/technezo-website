@@ -40,6 +40,7 @@ interface Laptop {
   displaySize: string;
   resolution: string;
   touchScreen: boolean;
+  touchAnd360: boolean;
   generation: string;
   gpu: string;
   available: boolean;
@@ -52,7 +53,7 @@ type FilterCriteria = {
   resolutions: string[];
   graphics: string[];
   generations: string[];
-  touchOptions: string[]; // "Touch" | "Non-Touch"
+  touchOptions: string[]; // "Touch" | "Non-Touch" | "Touch & 360"
   minPrice: number | null;
   maxPrice: number | null;
   inStockOnly: boolean;
@@ -226,7 +227,7 @@ function FilterSidebar({
       
       <FilterGroup
         title="Touch Screen"
-        options={['Touch', 'Non-Touch']}
+        options={['Touch', 'Non-Touch', 'Touch & 360']}
         selected={selectedFilters.touchOptions}
         onChange={(val) => handleCheckboxChange('touchOptions', val)}
       />
@@ -380,6 +381,7 @@ export default function HomePage() {
             screenSize,
             resolution,
             touchScreen,
+            touchAnd360,
             os,
             warranty,
             condition,
@@ -436,8 +438,16 @@ export default function HomePage() {
 
     if (touchOptions.length) {
       result = result.filter((p) => {
-        const key = p.touchScreen ? 'Touch' : 'Non-Touch';
-        return touchOptions.includes(key);
+        if (touchOptions.includes('Touch & 360')) {
+          if (p.touchAnd360 === true) return true;
+        }
+        if (touchOptions.includes('Touch')) {
+          if (p.touchScreen === true && p.touchAnd360 !== true) return true;
+        }
+        if (touchOptions.includes('Non-Touch')) {
+          if (p.touchScreen === false && p.touchAnd360 !== true) return true;
+        }
+        return false;
       });
     }
 

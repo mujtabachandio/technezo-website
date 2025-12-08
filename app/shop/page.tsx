@@ -43,6 +43,8 @@ interface Laptop {
   brand: string;
   gpu: string;
   available: boolean;
+  touchScreen: boolean;
+  touchAnd360: boolean;
 }
 
 type FilterCriteria = {
@@ -50,6 +52,7 @@ type FilterCriteria = {
   rams: string[];
   graphics: string[];
   conditions: string[];
+  touchOptions: string[]; // "Touch" | "Non-Touch" | "Touch & 360"
   minPrice: number | null;
   maxPrice: number | null;
   inStockOnly: boolean;
@@ -61,6 +64,7 @@ const initialFilters: FilterCriteria = {
   rams: [],
   graphics: [],
   conditions: [],
+  touchOptions: [],
   minPrice: null,
   maxPrice: null,
   inStockOnly: false,
@@ -146,6 +150,7 @@ export default function ShopPage() {
             screenSize,
             resolution,
             touchScreen,
+            touchAnd360,
             os,
             warranty,
             condition,
@@ -187,6 +192,20 @@ export default function ShopPage() {
     if (filters.conditions.length > 0) {
       result = result.filter((p) => filters.conditions.includes(p.condition));
     }
+    if (filters.touchOptions.length > 0) {
+      result = result.filter((p) => {
+        if (filters.touchOptions.includes('Touch & 360')) {
+          if (p.touchAnd360 === true) return true;
+        }
+        if (filters.touchOptions.includes('Touch')) {
+          if (p.touchScreen === true && p.touchAnd360 !== true) return true;
+        }
+        if (filters.touchOptions.includes('Non-Touch')) {
+          if (p.touchScreen === false && p.touchAnd360 !== true) return true;
+        }
+        return false;
+      });
+    }
     if (filters.minPrice !== null) {
       result = result.filter((p) => filters.minPrice !== null && p.price >= filters.minPrice);
     }
@@ -211,7 +230,7 @@ export default function ShopPage() {
 
   // Handler functions for the filters.
   const handleCheckboxChange = (
-    field: 'brands' | 'rams' | 'graphics' | 'conditions',
+    field: 'brands' | 'rams' | 'graphics' | 'conditions' | 'touchOptions',
     value: string
   ) => {
     let updated = [...filters[field]];
@@ -375,6 +394,25 @@ export default function ShopPage() {
               </div>
             </div>
 
+            {/* Touch Screen Filter */}
+            <div className="mb-6">
+              <h3 className="font-medium text-lg text-gray-700 mb-2">Touch Screen</h3>
+              <div className="space-y-2">
+                {['Touch', 'Non-Touch', 'Touch & 360'].map((option) => (
+                  <label key={option} className="flex items-center">
+                    <input
+                      type="checkbox"
+                      value={option}
+                      checked={filters.touchOptions.includes(option)}
+                      onChange={() => handleCheckboxChange('touchOptions', option)}
+                      className="w-4 h-4 text-red-600 border-gray-300 rounded focus:ring-red-500"
+                    />
+                    <span className="ml-2 text-sm text-gray-600">{option}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+
             {/* Price Range */}
             <div className="mb-6">
               <h3 className="font-medium text-lg text-gray-700 mb-2">Price Range</h3>
@@ -530,6 +568,25 @@ export default function ShopPage() {
                     className="w-4 h-4 text-red-600 border-gray-300 rounded focus:ring-red-500"
                   />
                   <span className="ml-2 text-sm text-gray-700">{cond}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+
+          {/* Touch Screen Filter */}
+          <div className="mb-6">
+            <h3 className="font-medium text-lg text-gray-800 mb-2 border-b border-gray-200 pb-2">Touch Screen</h3>
+            <div className="space-y-2 mt-3">
+              {['Touch', 'Non-Touch', 'Touch & 360'].map((option) => (
+                <label key={option} className="flex items-center">
+                  <input
+                    type="checkbox"
+                    value={option}
+                    checked={filters.touchOptions.includes(option)}
+                    onChange={() => handleCheckboxChange('touchOptions', option)}
+                    className="w-4 h-4 text-red-600 border-gray-300 rounded focus:ring-red-500"
+                  />
+                  <span className="ml-2 text-sm text-gray-700">{option}</span>
                 </label>
               ))}
             </div>

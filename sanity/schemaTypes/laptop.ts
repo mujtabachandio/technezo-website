@@ -80,6 +80,12 @@ export default {
       type: 'boolean',
       description: 'Check if this laptop has a touchscreen',
     },
+    {
+      name: 'touchAnd360',
+      title: 'Touch & 360?',
+      type: 'boolean',
+      description: 'Check if this laptop has both touchscreen and 360-degree hinge',
+    },
 
     // Other Specs
     { name: 'os', title: 'Operating System', type: 'string' },

@@ -43,6 +43,7 @@ export default async function ProductPage({
       screenSize,
       resolution,
       touchScreen,
+      touchAnd360,
       os,
       warranty,
       condition,

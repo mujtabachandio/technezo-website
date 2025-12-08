@@ -6,6 +6,7 @@ import laptopDeal from './laptopDeal'
 import newArrivalLaptop from './newArrivalLaptop'
 import ram from './ram'
 import storage from './storage'
+import googleReviews from './googleReviews'
 export const schema: { types: SchemaTypeDefinition[] } = {
   types: [
     laptop, 
@@ -14,6 +15,7 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     laptopDeal,
     newArrivalLaptop,
     ram,
-    storage,  
+    storage,
+    googleReviews,
   ],
 }
