@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { ChevronLeft, ChevronRight, Check } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
-import Image from 'next/image';
-import client from '@/sanity/lib/client';
+import { useState, useEffect } from "react";
+import { ChevronLeft, ChevronRight, Check } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
+import client from "@/sanity/lib/client";
 
 interface Review {
   name: string;
@@ -18,132 +18,148 @@ interface Review {
 // Hardcoded reviews from README.md
 const hardcodedReviews: Review[] = [
   {
-    name: 'Mohammad Riyan',
+    name: "Mohammad Riyan",
     isVerified: true,
     rating: 5,
-    reviewText: 'I recently bought a laptop from Technezo, and I was really impressed by their professionalism and excellent customer service. The best part is their 3-day return policy, which they actually honor even if you\'re simply not satisfied with the product.',
-    date: '2024-12-01',
-    reviewCount: '2 reviews',
+    reviewText:
+      "I recently bought a laptop from Technezo, and I was really impressed by their professionalism and excellent customer service. The best part is their 3-day return policy, which they actually honor even if you're simply not satisfied with the product.",
+    date: "2024-12-01",
+    reviewCount: "2 reviews",
   },
   {
-    name: 'zaka ali',
+    name: "zaka ali",
     isVerified: true,
     rating: 5,
-    reviewText: 'I have got best laptop service was excellent even after the purchase of my laptop technezo staff was personally were in contact iam very satisfied with there service and it\'s my second laptop which i have purchase from them and they offer best laptop deals and they provide value for money',
-    date: '2024-12-10',
-    reviewCount: '2 reviews · 2 photos',
+    reviewText:
+      "I have got best laptop service was excellent even after the purchase of my laptop technezo staff was personally were in contact iam very satisfied with there service and it's my second laptop which i have purchase from them and they offer best laptop deals and they provide value for money",
+    date: "2024-12-10",
+    reviewCount: "2 reviews · 2 photos",
   },
   {
-    name: 'Afzal Ahmed',
+    name: "Afzal Ahmed",
     isVerified: true,
     rating: 5,
-    reviewText: 'Review: Excellent Laptop Purchase Experience. I recently purchased a laptop from TECHNEZO/ Brand DELL Latitude 7470 6th generation 8/256 with 2k display Touch, and I\'m extremely satisfied with both the product and service.',
-    date: '2024-07-01',
-    reviewCount: '1 review · 4 photos',
+    reviewText:
+      "Review: Excellent Laptop Purchase Experience. I recently purchased a laptop from TECHNEZO/ Brand DELL Latitude 7470 6th generation 8/256 with 2k display Touch, and I'm extremely satisfied with both the product and service.",
+    date: "2024-07-01",
+    reviewCount: "1 review · 4 photos",
   },
   {
-    name: 'Zaheer Ahmed',
+    name: "Zaheer Ahmed",
     isVerified: true,
     rating: 5,
-    reviewText: 'I bought a laptop from here, the quality is excellent and it had a 3 day replacement warranty. I even got it replaced myself, even though I went after 4 days. They also provide a 15-day checking warranty. Their service and way of dealing are the best.',
-    date: '2024-12-10',
-    reviewCount: '1 review',
+    reviewText:
+      "I bought a laptop from here, the quality is excellent and it had a 3 day replacement warranty. I even got it replaced myself, even though I went after 4 days. They also provide a 15-day checking warranty. Their service and way of dealing are the best.",
+    date: "2024-12-10",
+    reviewCount: "1 review",
   },
   {
-    name: 'Rizwan Mumtaz',
+    name: "Rizwan Mumtaz",
     isVerified: true,
     rating: 5,
-    reviewText: 'I am giving it five stars because Alhamdulillah I have bought 8 to 10 laptops from this shop for my czns and friends and I have not had any problems. Their dealing style is also very good. Along with a three-day return policy, they are also providing excellent after-sales service.',
-    date: '2024-06-01',
-    reviewCount: '1 review · 1 photo',
+    reviewText:
+      "I am giving it five stars because Alhamdulillah I have bought 8 to 10 laptops from this shop for my czns and friends and I have not had any problems. Their dealing style is also very good. Along with a three-day return policy, they are also providing excellent after-sales service.",
+    date: "2024-06-01",
+    reviewCount: "1 review · 1 photo",
   },
   {
-    name: 'Roshni Bharwani',
+    name: "Roshni Bharwani",
     isVerified: true,
     rating: 5,
-    reviewText: 'I recently purchased a laptop and I\'m blown away by its performance considering the price i think I got an excellent deal the laptop is really good and I\'m loving it so far',
-    date: '2024-12-10',
-    reviewCount: '1 review · 1 photo',
+    reviewText:
+      "I recently purchased a laptop and I'm blown away by its performance considering the price i think I got an excellent deal the laptop is really good and I'm loving it so far",
+    date: "2024-12-10",
+    reviewCount: "1 review · 1 photo",
   },
   {
-    name: 'Mayur Assnani',
+    name: "Mayur Assnani",
     isVerified: true,
     rating: 5,
-    reviewText: 'First I bought an HP laptop from Technezo, and the quality plus service were so impressive that it forced me to buy a Dell laptop within the next two weeks. Both arrived safe and sound through TCS courier, saving me time and money. On top of that, their customer service is outstanding.',
-    date: '2024-10-01',
-    reviewCount: '1 review',
+    reviewText:
+      "First I bought an HP laptop from Technezo, and the quality plus service were so impressive that it forced me to buy a Dell laptop within the next two weeks. Both arrived safe and sound through TCS courier, saving me time and money. On top of that, their customer service is outstanding.",
+    date: "2024-10-01",
+    reviewCount: "1 review",
   },
   {
-    name: 'S M',
+    name: "S M",
     isVerified: true,
     rating: 5,
-    reviewText: 'After searching Regal centre, I meet Mr. Haresh at Technezo.. He guide us properly and gave best options that comes under our budget and we finalise one.. He is very genuine and promised nothing extra where in the market people made false promises.',
-    date: '2024-12-17',
-    reviewCount: 'Local Guide · 4 reviews · 2 photos',
+    reviewText:
+      "After searching Regal centre, I meet Mr. Haresh at Technezo.. He guide us properly and gave best options that comes under our budget and we finalise one.. He is very genuine and promised nothing extra where in the market people made false promises.",
+    date: "2024-12-17",
+    reviewCount: "Local Guide · 4 reviews · 2 photos",
   },
   {
-    name: 'Ahmed Awan',
+    name: "Ahmed Awan",
     isVerified: true,
     rating: 5,
-    reviewText: 'I recently purchased a laptop from this shop and I must say, I had a great experience. The staff was extremely polite, helpful, and genuinely guided me in selecting the right device according to my needs. The person I dealt with was very professional.',
-    date: '2024-08-01',
-    reviewCount: '1 review',
+    reviewText:
+      "I recently purchased a laptop from this shop and I must say, I had a great experience. The staff was extremely polite, helpful, and genuinely guided me in selecting the right device according to my needs. The person I dealt with was very professional.",
+    date: "2024-08-01",
+    reviewCount: "1 review",
   },
   {
-    name: 'Ayub Nazeer',
+    name: "Ayub Nazeer",
     isVerified: true,
     rating: 5,
-    reviewText: 'I have been a customer of TECHNEZO from 3 years and have bought 3 laptops from them. I am very satisfied with the quality and performance of their laptops. One great thing is that they recommend the best options based on your preferences at reasonable prices.',
-    date: '2024-08-01',
-    reviewCount: '1 review',
+    reviewText:
+      "I have been a customer of TECHNEZO from 3 years and have bought 3 laptops from them. I am very satisfied with the quality and performance of their laptops. One great thing is that they recommend the best options based on your preferences at reasonable prices.",
+    date: "2024-08-01",
+    reviewCount: "1 review",
   },
   {
-    name: 'Muhammad Qasim',
+    name: "Muhammad Qasim",
     isVerified: true,
     rating: 5,
-    reviewText: 'I\'ve been a satisfied customer of Haresh Bhai l for more than 4 years. He\'s a great person who offers really reasonable prices. The 3-day return and 15 day checking policy is unmatched in the market. Highly recommended!',
-    date: '2024-11-01',
-    reviewCount: '6 reviews',
+    reviewText:
+      "I've been a satisfied customer of Haresh Bhai l for more than 4 years. He's a great person who offers really reasonable prices. The 3-day return and 15 day checking policy is unmatched in the market. Highly recommended!",
+    date: "2024-11-01",
+    reviewCount: "6 reviews",
   },
   {
-    name: 'Akber Ali',
+    name: "Akber Ali",
     isVerified: true,
     rating: 5,
-    reviewText: 'I am a shopkeeper and have frequently purchased goods from them for my store. To date, I have not encountered any issues with the products, and the quality has consistently met my expectations. My experience with them has been highly satisfactory and professional.',
-    date: '2024-11-01',
-    reviewCount: '1 review',
+    reviewText:
+      "I am a shopkeeper and have frequently purchased goods from them for my store. To date, I have not encountered any issues with the products, and the quality has consistently met my expectations. My experience with them has been highly satisfactory and professional.",
+    date: "2024-11-01",
+    reviewCount: "1 review",
   },
   {
-    name: 'Anees Ahmed',
+    name: "Anees Ahmed",
     isVerified: true,
     rating: 5,
-    reviewText: 'I\'ve visited this computer store multiple times and every experience has been nothing short of excellent. From their in-store staff to their online service, they\'ve consistently delivered top-notch customer care. I\'ve purchased laptops both online and in-store.',
-    date: '2024-10-01',
-    reviewCount: 'Local Guide · 151 reviews · 366 photos',
+    reviewText:
+      "I've visited this computer store multiple times and every experience has been nothing short of excellent. From their in-store staff to their online service, they've consistently delivered top-notch customer care. I've purchased laptops both online and in-store.",
+    date: "2024-10-01",
+    reviewCount: "Local Guide · 151 reviews · 366 photos",
   },
   {
-    name: 'Hasnain Ali',
+    name: "Hasnain Ali",
     isVerified: true,
     rating: 5,
-    reviewText: 'I recently bought a used laptop from Technezo and had a great experience. The owner was professional, transparent, and took time to explain everything clearly. The laptop quality exceeded my expectations.',
-    date: '2024-07-01',
-    reviewCount: '4 reviews',
+    reviewText:
+      "I recently bought a used laptop from Technezo and had a great experience. The owner was professional, transparent, and took time to explain everything clearly. The laptop quality exceeded my expectations.",
+    date: "2024-07-01",
+    reviewCount: "4 reviews",
   },
   {
-    name: 'Harshi Kesh',
+    name: "Harshi Kesh",
     isVerified: true,
     rating: 5,
-    reviewText: 'Bought a laptop from Mr. Haresh and I\'m honestly loving it. Great deal, fair price, and the laptop works perfectly. Smooth experience overall. Highly recommended!',
-    date: '2024-12-17',
-    reviewCount: '1 review',
+    reviewText:
+      "Bought a laptop from Mr. Haresh and I'm honestly loving it. Great deal, fair price, and the laptop works perfectly. Smooth experience overall. Highly recommended!",
+    date: "2024-12-17",
+    reviewCount: "1 review",
   },
   {
-    name: 'Syed Ammad Shah',
+    name: "Syed Ammad Shah",
     isVerified: true,
     rating: 5,
-    reviewText: 'I bought 2 laptops from their shop. They give a 3 day money back warranty, which I liked the most. They talk nicely and are very helpful. Really good service!',
-    date: '2024-08-01',
-    reviewCount: '1 review',
+    reviewText:
+      "I bought 2 laptops from their shop. They give a 3 day money back warranty, which I liked the most. They talk nicely and are very helpful. Really good service!",
+    date: "2024-08-01",
+    reviewCount: "1 review",
   },
 ];
 
@@ -166,7 +182,7 @@ export default function GoogleReviews() {
             totalReviews
           }
         `);
-        
+
         if (data) {
           if (data.overallRating !== undefined) {
             setOverallRating(data.overallRating);
@@ -176,11 +192,11 @@ export default function GoogleReviews() {
           }
         }
       } catch (error) {
-        console.error('Error fetching review stats:', error);
+        console.error("Error fetching review stats:", error);
         // Keep default values on error
       }
     }
-    
+
     fetchReviewStats();
   }, []);
 
@@ -215,17 +231,17 @@ export default function GoogleReviews() {
       const now = new Date();
       const diffTime = Math.abs(now.getTime() - date.getTime());
       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-      
-      if (diffDays === 0) return 'Today';
-      if (diffDays === 1) return '1 day ago';
+
+      if (diffDays === 0) return "Today";
+      if (diffDays === 1) return "1 day ago";
       if (diffDays < 7) return `${diffDays} days ago`;
-      if (diffDays < 14) return '1 week ago';
+      if (diffDays < 14) return "1 week ago";
       if (diffDays < 30) return `${Math.floor(diffDays / 7)} weeks ago`;
-      if (diffDays < 60) return '1 month ago';
+      if (diffDays < 60) return "1 month ago";
       if (diffDays < 365) return `${Math.floor(diffDays / 30)} months ago`;
-      return '1 year ago';
+      return "1 year ago";
     } catch {
-      return 'Recently';
+      return "Recently";
     }
   };
 
@@ -235,14 +251,14 @@ export default function GoogleReviews() {
 
   const getProfileColor = (name: string) => {
     const colors = [
-      'bg-purple-500',
-      'bg-blue-500',
-      'bg-green-500',
-      'bg-yellow-500',
-      'bg-pink-500',
-      'bg-indigo-500',
-      'bg-red-500',
-      'bg-teal-500',
+      "bg-purple-500",
+      "bg-blue-500",
+      "bg-green-500",
+      "bg-yellow-500",
+      "bg-pink-500",
+      "bg-indigo-500",
+      "bg-red-500",
+      "bg-teal-500",
     ];
     const index = name.charCodeAt(0) % colors.length;
     return colors[index];
@@ -264,7 +280,9 @@ export default function GoogleReviews() {
                 className="h-7 w-auto"
                 priority
               />
-              <span className="text-xl md:text-2xl font-normal text-gray-900">Reviews</span>
+              <span className="text-xl md:text-2xl font-normal text-gray-900">
+                Reviews
+              </span>
             </div>
           </div>
 
@@ -280,10 +298,10 @@ export default function GoogleReviews() {
                     key={i}
                     className={`w-5 h-5 md:w-6 md:h-6 ${
                       i < Math.floor(reviewsData.overallRating)
-                        ? 'text-yellow-400 fill-current'
+                        ? "text-yellow-400 fill-current"
                         : i < reviewsData.overallRating
-                        ? 'text-yellow-400 fill-current opacity-50'
-                        : 'text-gray-300'
+                          ? "text-yellow-400 fill-current opacity-50"
+                          : "text-gray-300"
                     }`}
                     viewBox="0 0 24 24"
                   >
@@ -371,9 +389,13 @@ export default function GoogleReviews() {
                             <Check className="w-4 h-4 text-blue-500 flex-shrink-0" />
                           )}
                         </div>
-                        <p className="text-xs text-gray-500">{formatDate(review.date)}</p>
+                        <p className="text-xs text-gray-500">
+                          {formatDate(review.date)}
+                        </p>
                         {review.reviewCount && (
-                          <p className="text-xs text-gray-400 mt-0.5">{review.reviewCount}</p>
+                          <p className="text-xs text-gray-400 mt-0.5">
+                            {review.reviewCount}
+                          </p>
                         )}
                       </div>
                     </div>
@@ -384,7 +406,9 @@ export default function GoogleReviews() {
                         <svg
                           key={i}
                           className={`w-4 h-4 ${
-                            i < review.rating ? 'text-yellow-400 fill-current' : 'text-gray-300'
+                            i < review.rating
+                              ? "text-yellow-400 fill-current"
+                              : "text-gray-300"
                           }`}
                           viewBox="0 0 24 24"
                         >
@@ -394,7 +418,9 @@ export default function GoogleReviews() {
                     </div>
 
                     {/* Review Text */}
-                    <p className="text-sm text-gray-700 line-clamp-3">{review.reviewText}</p>
+                    <p className="text-sm text-gray-700 line-clamp-3">
+                      {review.reviewText}
+                    </p>
                   </div>
                 ))}
               </motion.div>
@@ -421,7 +447,7 @@ export default function GoogleReviews() {
                 key={index}
                 onClick={() => goToSlide(index)}
                 className={`w-2 h-2 rounded-full transition-all ${
-                  index === currentIndex ? 'bg-gray-600 w-8' : 'bg-gray-300'
+                  index === currentIndex ? "bg-gray-600 w-8" : "bg-gray-300"
                 }`}
                 aria-label={`Go to page ${index + 1}`}
               />
@@ -432,4 +458,3 @@ export default function GoogleReviews() {
     </section>
   );
 }
-
