@@ -3,7 +3,7 @@ import  client  from "@/sanity/lib/client";
 import Link from "next/link";
 import dynamicImport from "next/dynamic";
 import DescriptionSpecsToggle from "@/app/components/DescriptionSpecsToggle";
-import ProductClientSide from "./ProductClientSide";
+import LaptopBuyBox from "@/app/components/LaptopBuyBox";
 
 // Force dynamic rendering to always fetch fresh price data (bypasses SSG cache)
 export const dynamic = 'force-dynamic';
@@ -37,6 +37,7 @@ export default async function ProductPage({
       processor,
       generation,
       ram,
+      ramOptions[]{ label, extraPrice },
       storage,
       gpu,
       displaySize,
@@ -183,16 +184,8 @@ export default async function ProductPage({
 
           {/* ─── Product Info Section ───────────────────────── */}
           <div className="p-6 space-y-6">
-            <div className="space-y-2">
-              <div className="flex justify-between items-baseline">
-                <p className="text-3xl font-bold text-gray-900">
-                  Rs {typeof product?.price === 'number'
-  ? product.price.toLocaleString()
-  : '-'}
-
-                </p>
-              </div>
-            </div>
+            {/* Price + RAM selection + add to cart (price is Sanity-controlled) */}
+            <LaptopBuyBox product={product} />
 
             <div className="border-t border-b border-gray-200 py-6">
               <dl className="grid grid-cols-1 gap-y-4">
@@ -220,8 +213,6 @@ export default async function ProductPage({
             </div>
 
             <div className="space-y-4">
-            <ProductClientSide product={product} />
-
               <Link
                 href="https://wa.me/03332568818?text=Hi%2C%20I%27m%20interested%20in%20your%20laptop%20listed%20on%20your%20website."
                 target="_blank"

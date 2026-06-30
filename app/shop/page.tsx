@@ -8,6 +8,7 @@ import  client  from '@/sanity/lib/client';
 import imageUrlBuilder from '@sanity/image-url';
 import { motion } from 'framer-motion';
 import Navbar from '../components/Navbar';
+import { usePersistentState } from '@/lib/usePersistentState';
 
 import type { SanityImageSource } from '@sanity/image-url/lib/types/types';
 
@@ -118,7 +119,8 @@ const cardVariants = {
 export default function ShopPage() {
   const [allProducts, setAllProducts] = useState<Laptop[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<Laptop[]>([]);
-  const [filters, setFilters] = useState<FilterCriteria>(initialFilters);
+  // Persisted so filters survive navigating to a product page and back.
+  const [filters, setFilters] = usePersistentState<FilterCriteria>('shopFilters', initialFilters);
   const [isLoading, setIsLoading] = useState(true);
   const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false);
 

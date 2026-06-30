@@ -8,6 +8,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { allRamsQuery } from '@/lib/queries'
 import { ChevronDown, ChevronUp, X, Search, Sliders } from 'lucide-react'
+import { usePersistentState } from '@/lib/usePersistentState'
 
 export default function RamPage() {
   const [products, setProducts] = useState<Ram[]>([])
@@ -21,13 +22,13 @@ export default function RamPage() {
   const [capacityOptions, setCapacityOptions] = useState<number[]>([])
   const [speedOptions, setSpeedOptions] = useState<number[]>([])
 
-  // Active filters
-  const [activeBrand, setActiveBrand] = useState<string | null>(null)
-  const [activeDdrType, setActiveDdrType] = useState<string | null>(null)
-  const [activeCapacity, setActiveCapacity] = useState<number | null>(null)
-  const [activeSpeed, setActiveSpeed] = useState<number | null>(null)
-  const [stockFilter, setStockFilter] = useState<boolean | null>(null)
-  const [searchQuery, setSearchQuery] = useState<string>('')
+  // Active filters — persisted so they survive navigating to a product page and back.
+  const [activeBrand, setActiveBrand] = usePersistentState<string | null>('ramFilter.brand', null)
+  const [activeDdrType, setActiveDdrType] = usePersistentState<string | null>('ramFilter.ddrType', null)
+  const [activeCapacity, setActiveCapacity] = usePersistentState<number | null>('ramFilter.capacity', null)
+  const [activeSpeed, setActiveSpeed] = usePersistentState<number | null>('ramFilter.speed', null)
+  const [stockFilter, setStockFilter] = usePersistentState<boolean | null>('ramFilter.stock', null)
+  const [searchQuery, setSearchQuery] = usePersistentState<string>('ramFilter.search', '')
 
   // Accordion open state
   const [openSections, setOpenSections] = useState({
@@ -59,6 +60,25 @@ export default function RamPage() {
     }
     fetchProducts()
   }, [])
+
+  // Apply filters whenever they change or the product list loads. This also
+  // applies filters restored from sessionStorage on return navigation.
+  useEffect(() => {
+    let result = [...products]
+    if (activeBrand) result = result.filter(p => p.brand === activeBrand)
+    if (activeDdrType) result = result.filter(p => p.type === activeDdrType)
+    if (activeCapacity !== null) result = result.filter(p => p.capacity === activeCapacity)
+    if (activeSpeed !== null) result = result.filter(p => p.speed === activeSpeed)
+    if (stockFilter !== null) result = result.filter(p => p.inStock === stockFilter)
+    if (searchQuery.trim()) {
+      const q = searchQuery.toLowerCase()
+      result = result.filter(
+        p => p.title.toLowerCase().includes(q) || p.brand.toLowerCase().includes(q)
+      )
+    }
+    setFilteredProducts(result)
+  }, [products, activeBrand, activeDdrType, activeCapacity, activeSpeed, stockFilter, searchQuery])
+
   const toggleSection = (sec: keyof typeof openSections) =>
     setOpenSections(s => ({ ...s, [sec]: !s[sec] }))
 

@@ -32,7 +32,47 @@ export default {
     { name: 'model', title: 'Model', type: 'string' },
     { name: 'processor', title: 'Processor', type: 'string' },
     { name: 'generation', title: 'Generation', type: 'string' },
-    { name: 'ram', title: 'RAM', type: 'string' },
+    { name: 'ram', title: 'RAM (base)', type: 'string' },
+    {
+      name: 'ramOptions',
+      title: 'RAM Upgrade Options',
+      description:
+        'Optional. The price above covers the base RAM. Add each upgradeable RAM size here with the EXTRA amount added on top of the base price (use 0 for no extra cost). Leave empty to disable RAM selection on this laptop.',
+      type: 'array',
+      of: [
+        {
+          type: 'object',
+          fields: [
+            {
+              name: 'label',
+              title: 'RAM Label',
+              type: 'string',
+              description: 'e.g. 16GB, 32GB',
+              validation: (Rule: any) => Rule.required(),
+            },
+            {
+              name: 'extraPrice',
+              title: 'Extra Price (PKR)',
+              type: 'number',
+              description: 'Amount added to the base price for this RAM',
+              validation: (Rule: any) => Rule.min(0),
+            },
+          ],
+          preview: {
+            select: { title: 'label', subtitle: 'extraPrice' },
+            prepare({ title, subtitle }: { title?: string; subtitle?: number }) {
+              return {
+                title: title || 'RAM option',
+                subtitle:
+                  subtitle && subtitle > 0
+                    ? `+Rs ${subtitle.toLocaleString()}`
+                    : 'No extra cost',
+              };
+            },
+          },
+        },
+      ],
+    },
     { name: 'storage', title: 'Storage', type: 'string' },
 
     // Graphics

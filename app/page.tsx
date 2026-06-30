@@ -22,6 +22,8 @@ export default function Home() {
     <>
       <Navbar />
       <HeroSection />
+      <Review />
+
       <ProductSection />
       <Logo />
       <Review />

@@ -5,6 +5,16 @@ import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import client from "@/sanity/lib/client";
+import { usePersistentState } from "@/lib/usePersistentState";
+
+const initialStorageFilters = {
+  type: "",
+  brand: "",
+  interface: "",
+  minCapacity: 0,
+  maxPrice: 0,
+  inStock: false,
+};
 
 interface StorageProduct {
   _id: string;
@@ -33,14 +43,11 @@ interface StorageProduct {
 export default function StoragePage() {
   const [products, setProducts] = useState<StorageProduct[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<StorageProduct[]>([]);
-  const [activeFilters, setActiveFilters] = useState({
-    type: "",
-    brand: "",
-    interface: "",
-    minCapacity: 0,
-    maxPrice: 0,
-    inStock: false,
-  });
+  // Persisted so filters survive navigating to a product page and back.
+  const [activeFilters, setActiveFilters] = usePersistentState(
+    "storageFilters",
+    initialStorageFilters
+  );
 
   useEffect(() => {
     async function fetchProducts() {
@@ -78,33 +85,27 @@ export default function StoragePage() {
   const allInterfaces = [...new Set(products.map((p) => p.interface).filter(Boolean))];
   const maxPriceValue = Math.max(...products.map((p) => p.price), 0);
 
-  const handleFilterChange = (filterType: string, value: string | number | boolean) => {
-    const newFilters = { ...activeFilters, [filterType]: value };
-    setActiveFilters(newFilters);
-
+  // Re-apply filters whenever they change or the product list loads. This also
+  // applies filters restored from sessionStorage on return navigation.
+  useEffect(() => {
     let result = [...products];
 
-    if (newFilters.type) result = result.filter((p) => p.type === newFilters.type);
-    if (newFilters.brand) result = result.filter((p) => p.brand === newFilters.brand);
-    if (newFilters.interface) result = result.filter((p) => p.interface === newFilters.interface);
-    if (newFilters.minCapacity > 0) result = result.filter((p) => p.capacity >= newFilters.minCapacity);
-    if (newFilters.maxPrice > 0) result = result.filter((p) => p.price <= newFilters.maxPrice);
-    if (newFilters.inStock) result = result.filter((p) => p.inStock);
+    if (activeFilters.type) result = result.filter((p) => p.type === activeFilters.type);
+    if (activeFilters.brand) result = result.filter((p) => p.brand === activeFilters.brand);
+    if (activeFilters.interface) result = result.filter((p) => p.interface === activeFilters.interface);
+    if (activeFilters.minCapacity > 0) result = result.filter((p) => p.capacity >= activeFilters.minCapacity);
+    if (activeFilters.maxPrice > 0) result = result.filter((p) => p.price <= activeFilters.maxPrice);
+    if (activeFilters.inStock) result = result.filter((p) => p.inStock);
 
     setFilteredProducts(result);
+  }, [activeFilters, products]);
+
+  const handleFilterChange = (filterType: string, value: string | number | boolean) => {
+    setActiveFilters((prev) => ({ ...prev, [filterType]: value }));
   };
 
   const resetFilters = () => {
-    const reset = {
-      type: "",
-      brand: "",
-      interface: "",
-      minCapacity: 0,
-      maxPrice: 0,
-      inStock: false,
-    };
-    setActiveFilters(reset);
-    setFilteredProducts(products);
+    setActiveFilters(initialStorageFilters);
   };
 
   const formatPrice = (price: number) =>

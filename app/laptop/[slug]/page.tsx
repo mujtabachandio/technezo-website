@@ -2,7 +2,7 @@ import  client  from '@/sanity/lib/client';
 import Link from 'next/link';
 import dynamicImport from 'next/dynamic';
 import { notFound } from 'next/navigation';
-import AddToCart from '@/app/new-arrivals/addtocart';
+import LaptopBuyBox from '@/app/components/LaptopBuyBox';
 
 // Force dynamic rendering to always fetch fresh price data (bypasses SSG cache)
 export const dynamic = 'force-dynamic';
@@ -32,6 +32,7 @@ export default async function LaptopDetailPage({ params }: { params: { slug: str
       processor,
       generation,
       ram,
+      ramOptions[]{ label, extraPrice },
       storage,
       gpu,
       displaySize,
@@ -93,14 +94,8 @@ export default async function LaptopDetailPage({ params }: { params: { slug: str
 
           {/* ─── Laptop Details ───────────────────── */}
           <div className="p-6 space-y-6">
-            <div className="space-y-2">
-              <div className="flex justify-between items-baseline">
-                <p className="text-3xl font-bold text-gray-900">
-                  Rs {laptop.price?.toLocaleString()}
-                </p>
-                <p className="text-sm text-gray-500">Inclusive of all taxes</p>
-              </div>
-            </div>
+            {/* Price + RAM selection + add to cart (price is Sanity-controlled) */}
+            <LaptopBuyBox product={laptop} />
 
             <div className="border-t border-b border-gray-200 py-6">
               <dl className="grid grid-cols-1 gap-y-4">
@@ -126,9 +121,6 @@ export default async function LaptopDetailPage({ params }: { params: { slug: str
               </dl>
             </div>
 
-            <div className="space-y-4">
-              <AddToCart product={laptop} />
-            </div>
           </div>
         </div>
       </div>

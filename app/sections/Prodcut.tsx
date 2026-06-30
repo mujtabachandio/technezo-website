@@ -7,6 +7,7 @@ import { motion } from 'framer-motion';
 import client from '@/sanity/lib/client';
 import imageUrlBuilder from '@sanity/image-url';
 import type { SanityImageSource } from '@sanity/image-url/lib/types/types';
+import { usePersistentState } from '@/lib/usePersistentState';
 
 const builder = imageUrlBuilder(client);
 const urlFor = (src: SanityImageSource) =>
@@ -350,7 +351,8 @@ const SECTIONS: Section[] = [
 export default function HomePage() {
   const [allProducts, setAllProducts] = useState<Laptop[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<Laptop[]>([]);
-  const [filters, setFilters] = useState<FilterCriteria>(initialFilters);
+  // Persisted so filters survive navigating to a product page and back.
+  const [filters, setFilters] = usePersistentState<FilterCriteria>('homeFilters', initialFilters);
   const [isLoading, setIsLoading] = useState(true);
 
   // Fetch on mount - bypass CDN cache to ensure fresh price data
